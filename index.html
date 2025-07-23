@@ -1,0 +1,1204 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life Tracker - Mindful Living</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #166088;
+            --accent-color: #4fc3a1;
+            --danger-color: #d64045;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --morning-bg: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            --afternoon-bg: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+            --evening-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --night-bg: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body { 
+            
+           
+
+
+
+
+
+
+
+  
+         
+            background: var(--morning-bg);
+            color: var(--dark-color);
+            min-height: 100vh;
+            transition: background 0.5s ease;
+        }
+
+        header {
+            padding: 1.5rem;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .heartbeat {
+            position: absolute;
+            top: 1.5rem;
+            left: 1.5rem;
+            font-size: 1.5rem;
+            color: var(--danger-color);
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: var(--secondary-color);
+            font-weight: 300;
+        }
+
+        .time-showcase {
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            margin: 1rem auto;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        section {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .dashboard {
+            display: none;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .highlight {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 30px;
+            background-color: #e0e0e0;
+            border-radius: 15px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: 15px;
+            transition: width 0.5s ease;
+        }
+
+        .quote-container {
+            background-color: var(--light-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 5px solid var(--accent-color);
+        }
+
+        .quote-text {
+            font-size: 1.1rem;
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+
+        .quote-author {
+            text-align: right;
+            font-weight: 500;
+            color: var(--secondary-color);
+        }
+
+        .time-tracker-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .goals-list {
+            list-style-type: none;
+        }
+
+        .goal-item {
+            background-color: white;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .goal-info {
+            flex-grow: 1;
+        }
+
+        .goal-title {
+            font-weight: 500;
+            margin-bottom: 0.3rem;
+        }
+
+        .goal-deadline {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .goal-days-left {
+            font-weight: 600;
+            margin-left: 1rem;
+        }
+
+        .overdue {
+            color: var(--danger-color);
+            font-weight: 700;
+        }
+
+        .completed {
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        .pomodoro-container {
+            text-align: center;
+            padding: 2rem;
+            background-color: var(--light-color);
+            border-radius: 10px;
+        }
+
+        .pomodoro-timer {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--danger-color);
+            margin: 1rem 0;
+        }
+
+        .pomodoro-cycles {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            margin-top: 2rem;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Fixed Marquee styles */
+        .quote-marquee {
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            box-sizing: border-box;
+        }
+
+        .marquee-content {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 60s linear infinite;
+            animation-delay: 1s;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .quote-marquee:hover .marquee-content {
+            animation-play-state: paused;
+        }
+
+        /* Goal actions */
+        .goal-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .delete-btn {
+            background-color: var(--danger-color);
+        }
+        
+        .pomodoro-controls {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .pomodoro-btn {
+            padding: 0.75rem 1.5rem;
+        }
+        
+        .work-mode {
+            background-color: var(--danger-color);
+        }
+        
+        .break-mode {
+            background-color: var(--accent-color);
+        }
+
+        /* Visual Countdown Styles */
+        .visual-countdown {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .countdown-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: conic-gradient(var(--accent-color) 0%, var(--secondary-color) 0%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            animation: pulse 2s infinite alternate;
+        }
+
+        .countdown-inner {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+        }
+
+        .countdown-percent {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .countdown-label {
+            font-size: 1rem;
+            color: var(--secondary-color);
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+
+        /* Time Allocation Styles */
+        .time-allocation {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .time-category {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .time-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        .time-label {
+            min-width: 120px;
+        }
+
+        .time-bar {
+            flex-grow: 1;
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .time-fill {
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+
+        /* Seconds counter styles */
+        .seconds-counter {
+            font-size: 1rem;
+            margin-top: 0.5rem;
+            animation: pulse 1s infinite;
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .time-tracker-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quote-marquee {
+                font-size: 0.9rem;
+                padding: 0.6rem;
+            }
+
+            .countdown-circle {
+                width: 160px;
+                height: 160px;
+            }
+
+            .countdown-inner {
+                width: 140px;
+                height: 140px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .heartbeat {
+                top: 1rem;
+                left: 1rem;
+                font-size: 1.2rem;
+            }
+            
+            .stats-container {
+                gap: 1rem;
+            }
+            
+            .stat-card {
+                padding: 1rem;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .nav-button {
+                width: 100%;
+            }
+
+            .quote-marquee {
+                font-size: 0.8rem;
+            }
+
+            .countdown-circle {
+                width: 140px;
+                height: 140px;
+            }
+
+            .countdown-inner {
+                width: 120px;
+                height: 120px;
+            }
+
+            .countdown-percent {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="heartbeat">❤️</div>
+        <h1>Life Tracker</h1>
+        <p class="subtitle">Mindful Living Through Time Awareness</p>
+        <div class="time-showcase" id="current-time">
+            Current Time: Loading...
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- User Input Section -->
+        <section id="user-input-section">
+            <h2>Your Life Journey Begins Here</h2>
+            <form id="life-form">
+                <div class="form-group">
+                    <label for="full-name">Full Name</label>
+                    <input type="text" id="full-name" required placeholder="Enter your full name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="dob">Date of Birth</label>
+                    <input type="date" id="dob" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="life-expectancy">Estimated Life Expectancy (years)</label>
+                    <input type="number" id="life-expectancy" value="70" min="50" max="120">
+                </div>
+                
+                <button type="submit" id="submit-btn">Begin Tracking My Life</button>
+            </form>
+        </section>
+
+        <!-- Dashboard (hidden initially) -->
+        <section class="dashboard" id="dashboard">
+            <!-- Fixed Marquee for quotes -->
+            <div class="quote-marquee" aria-live="polite">
+                <div class="marquee-content">
+                    "Indeed, with hardship comes ease." — Quran 94:6 • 
+                    "The best time to plant a tree was 20 years ago. The second best time is now." — Chinese Proverb • 
+                    "Life is what happens when you're busy making other plans." — John Lennon • 
+                    "Whoever does righteousness - whether male or female - while he is a believer, We will surely cause him to live a good life." — Quran 16:97 •
+                    "The way to get started is to quit talking and begin doing." — Walt Disney •
+                    "And We will surely test you with something of fear and hunger and a loss of wealth and lives and fruits, but give good tidings to the patient." — Quran 2:155
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="nav-button" data-section="life-progress">Life Progress</button>
+                <button class="nav-button" data-section="daily-tracker">Daily Tracker</button>
+                <button class="nav-button" data-section="life-goals">Life Goals</button>
+                <button class="nav-button" data-section="pomodoro">Pomodoro Timer</button>
+            </div>
+
+            <!-- Life Progress Section -->
+            <div id="life-progress" class="dashboard-section">
+                <h2>Your Life Progress</h2>
+                
+                <!-- Visual Countdown Circle -->
+                <div class="visual-countdown">
+                    <div class="countdown-circle" id="countdown-circle">
+                        <div class="countdown-inner">
+                            <div class="countdown-percent" id="countdown-percent">0%</div>
+                            <div class="countdown-label">Life Completed</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <h3>Time Passed</h3>
+                        <div class="stat-value" id="years-passed">--</div>
+                        <p>Years</p>
+                        <div class="stat-value" id="months-passed">--</div>
+                        <p>Months</p>
+                        <div class="stat-value" id="weeks-passed">--</div>
+                        <p>Weeks</p>
+                        <div class="stat-value" id="days-passed">--</div>
+                        <p>Days</p>
+                        <div class="seconds-counter" id="seconds-passed">-- seconds</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <h3>Time Remaining</h3>
+                        <div class="stat-value" id="years-remaining">--</div>
+                        <p>Years</p>
+                        <div class="stat-value" id="months-remaining">--</div>
+                        <p>Months</p>
+                        <div class="stat-value" id="weeks-remaining">--</div>
+                        <p>Weeks</p>
+                        <div class="stat-value" id="days-remaining">--</div>
+                        <p>Days</p>
+                        <div class="seconds-counter" id="seconds-remaining">-- seconds</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <h3>Life Completion</h3>
+                        <div class="stat-value" id="life-percentage">--%</div>
+                        <div class="progress-container">
+                            <div class="progress-bar" id="life-progress-bar" style="width: 0%"></div>
+                        </div>
+                        <p>of your estimated lifespan</p>
+                    </div>
+                </div>
+                
+                <div class="highlight" id="live-countdown">
+                    Calculating your life countdown...
+                </div>
+            </div>
+
+            <!-- Daily Time Tracker Section -->
+            <div id="daily-tracker" class="dashboard-section" style="display: none;">
+                <h2>Daily Time Tracker</h2>
+                
+                <div class="time-tracker-grid">
+                    <div>
+                        <div class="form-group">
+                            <label for="wake-up-time">Wake-up Time</label>
+                            <input type="time" id="wake-up-time" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="sleep-time">Sleep Time</label>
+                            <input type="time" id="sleep-time" required>
+                        </div>
+                        
+                        <button id="calculate-day-btn">Calculate My Day</button>
+                    </div>
+                    
+                    <div>
+                        <div class="stat-card">
+                            <h3>Sleep Duration</h3>
+                            <div class="stat-value" id="sleep-duration">--</div>
+                            <p>hours</p>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <h3>Productive Hours Left</h3>
+                            <div class="stat-value" id="productive-hours">--</div>
+                            <p>hours</p>
+                        </div>
+                        
+                        <div class="highlight" id="day-countdown">
+                            Calculate your day to see time remaining
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Time Allocation</label>
+                    <div class="time-allocation" id="time-allocation">
+                        <div class="time-category">
+                            <div class="time-color" style="background-color: #4a6fa5;"></div>
+                            <div class="time-label">Sleep Time</div>
+                            <div class="time-bar">
+                                <div class="time-fill" id="sleep-fill" style="width: 0%; background-color: #4a6fa5;"></div>
+                            </div>
+                        </div>
+                        <div class="time-category">
+                            <div class="time-color" style="background-color: #4fc3a1;"></div>
+                            <div class="time-label">Productive Time</div>
+                            <div class="time-bar">
+                                <div class="time-fill" id="productive-fill" style="width: 0%; background-color: #4fc3a1;"></div>
+                            </div>
+                        </div>
+                        <div class="time-category">
+                            <div class="time-color" style="background-color: #d64045;"></div>
+                            <div class="time-label">Time Passed</div>
+                            <div class="time-bar">
+                                <div class="time-fill" id="passed-fill" style="width: 0%; background-color: #d64045;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Life Goals Section -->
+            <div id="life-goals" class="dashboard-section" style="display: none;">
+                <h2>Your Life Goals</h2>
+                
+                <div class="form-group">
+                    <label for="goal-title">Goal Title</label>
+                    <input type="text" id="goal-title" placeholder="What do you want to achieve?">
+                </div>
+                
+                <div class="form-group">
+                    <label for="goal-deadline">Target Finish Date</label>
+                    <input type="date" id="goal-deadline">
+                </div>
+                
+                <button id="add-goal-btn">Add Goal</button>
+                
+                <ul class="goals-list" id="goals-list">
+                    <!-- Goals will be added here -->
+                </ul>
+            </div>
+
+            <!-- Pomodoro Timer Section -->
+            <div id="pomodoro" class="dashboard-section" style="display: none;">
+                <h2>Pomodoro Productivity Timer</h2>
+                
+                <div class="pomodoro-container">
+                    <div class="pomodoro-timer" id="pomodoro-timer">25:00</div>
+                    
+                    <div class="pomodoro-controls">
+                        <button class="pomodoro-btn" id="start-pomodoro-btn">Start Work Session</button>
+                        <button class="pomodoro-btn" id="start-break-btn">Start Break</button>
+                        <button class="pomodoro-btn" id="reset-pomodoro-btn">Reset</button>
+                    </div>
+                    
+                    <div class="pomodoro-cycles" id="pomodoro-cycles">
+                        Completed Cycles: 0
+                    </div>
+                </div>
+                
+                <div style="margin-top: 2rem;">
+                    <h3>How to Use the Pomodoro Technique</h3>
+                    <ol>
+                        <li>Work for 25 minutes (one Pomodoro)</li>
+                        <li>Take a 5-minute break</li>
+                        <li>After 4 Pomodoros, take a longer 15-30 minute break</li>
+                        <li>Repeat to maximize productivity</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>Life Tracker - Mindful Living</p>
+        <p>Planned by Alrafi Siddiquee Jim</p>
+        <p>© 2023 - All Rights Reserved</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Form submission
+            const lifeForm = document.getElementById('life-form');
+            const userInputSection = document.getElementById('user-input-section');
+            const dashboard = document.getElementById('dashboard');
+            
+            // Update clock immediately and then every second
+            updateClock();
+            setInterval(updateClock, 1000);
+            
+            // Update background based on time of day
+            updateBackground();
+            setInterval(updateBackground, 60000); // Check every minute
+            
+            lifeForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form values
+                const fullName = document.getElementById('full-name').value;
+                const dob = document.getElementById('dob').value;
+                const lifeExpectancy = parseInt(document.getElementById('life-expectancy').value);
+                
+                // Basic validation
+                if (!fullName || !dob) {
+                    alert('Please fill in all required fields with valid data');
+                    return;
+                }
+                
+                // Hide input section and show dashboard
+                userInputSection.style.display = 'none';
+                dashboard.style.display = 'block';
+                
+                // Calculate and display life stats
+                updateLifeStats(new Date(dob), lifeExpectancy);
+                
+                // Update every second for real-time countdown
+                setInterval(() => updateLifeStats(new Date(dob), lifeExpectancy), 1000);
+                
+                document.getElementById('live-countdown').textContent = 
+                    `Welcome, ${fullName}! Making the most of your time starts now.`;
+            });
+            
+            // Navigation between dashboard sections
+            const navButtons = document.querySelectorAll('.nav-button');
+            const dashboardSections = document.querySelectorAll('.dashboard-section');
+            
+            navButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const sectionToShow = this.getAttribute('data-section');
+                    
+                    // Hide all sections
+                    dashboardSections.forEach(section => {
+                        section.style.display = 'none';
+                    });
+                    
+                    // Show selected section
+                    document.getElementById(sectionToShow).style.display = 'block';
+                });
+            });
+            
+            // Show first section by default
+            document.getElementById('life-progress').style.display = 'block';
+            
+            // Simple clock functionality
+            function updateClock() {
+                const now = new Date();
+                let hours = now.getHours();
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                const seconds = now.getSeconds().toString().padStart(2, '0');
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                
+                // Convert to 12-hour format
+                hours = hours % 12;
+                hours = hours ? hours : 12; // the hour '0' should be '12'
+                
+                document.getElementById('current-time').textContent = 
+                    `Current Time: ${hours}:${minutes}:${seconds} ${ampm}`;
+            }
+            
+            // Update background based on time of day
+            function updateBackground() {
+                const hour = new Date().getHours();
+                const root = document.documentElement;
+                
+                if (hour >= 5 && hour < 12) {
+                    document.body.style.background = 'var(--morning-bg)';
+                } else if (hour >= 12 && hour < 17) {
+                    document.body.style.background = 'var(--afternoon-bg)';
+                } else if (hour >= 17 && hour < 21) {
+                    document.body.style.background = 'var(--evening-bg)';
+                } else {
+                    document.body.style.background = 'var(--night-bg)';
+                }
+            }
+            
+            // Calculate life statistics
+            function updateLifeStats(dob, lifeExpectancy) {
+                const now = new Date();
+                const birthDate = new Date(dob);
+                
+                // Calculate age in milliseconds
+                const ageInMs = now - birthDate;
+                
+                // Calculate total estimated lifespan in milliseconds
+                const lifeExpectancyDate = new Date(birthDate);
+                lifeExpectancyDate.setFullYear(birthDate.getFullYear() + lifeExpectancy);
+                const totalLifeInMs = lifeExpectancyDate - birthDate;
+                
+                // Calculate remaining life in milliseconds
+                const remainingLifeInMs = lifeExpectancyDate - now;
+                
+                // Convert to various units
+                const msPerYear = 1000 * 60 * 60 * 24 * 365.25;
+                const msPerMonth = msPerYear / 12;
+                const msPerWeek = 1000 * 60 * 60 * 24 * 7;
+                const msPerDay = 1000 * 60 * 60 * 24;
+                const msPerSecond = 1000;
+                
+                // Time passed calculations
+                const yearsPassed = Math.floor(ageInMs / msPerYear);
+                const monthsPassed = Math.floor(ageInMs / msPerMonth);
+                const weeksPassed = Math.floor(ageInMs / msPerWeek);
+                const daysPassed = Math.floor(ageInMs / msPerDay);
+                const secondsPassed = Math.floor(ageInMs / msPerSecond);
+                
+                // Time remaining calculations
+                const yearsRemaining = Math.floor(remainingLifeInMs / msPerYear);
+                const monthsRemaining = Math.floor(remainingLifeInMs / msPerMonth % 12);
+                const weeksRemaining = Math.floor(remainingLifeInMs / msPerWeek % 52);
+                const daysRemaining = Math.floor(remainingLifeInMs / msPerDay % 365);
+                const secondsRemaining = Math.floor(remainingLifeInMs / msPerSecond % 60);
+                
+                // Life completion percentage
+                const lifePercentage = Math.min(100, Math.max(0, (ageInMs / totalLifeInMs * 100))).toFixed(2);
+                
+                // Update the DOM
+                document.getElementById('years-passed').textContent = yearsPassed;
+                document.getElementById('months-passed').textContent = monthsPassed;
+                document.getElementById('weeks-passed').textContent = weeksPassed;
+                document.getElementById('days-passed').textContent = daysPassed;
+                document.getElementById('seconds-passed').textContent = secondsPassed + ' seconds';
+                
+                document.getElementById('years-remaining').textContent = yearsRemaining;
+                document.getElementById('months-remaining').textContent = monthsRemaining;
+                document.getElementById('weeks-remaining').textContent = weeksRemaining;
+                document.getElementById('days-remaining').textContent = daysRemaining;
+                document.getElementById('seconds-remaining').textContent = secondsRemaining + ' seconds';
+                
+                document.getElementById('life-percentage').textContent = lifePercentage + '%';
+                document.getElementById('life-progress-bar').style.width = lifePercentage + '%';
+                document.getElementById('countdown-percent').textContent = lifePercentage + '%';
+                
+                // Update visual countdown circle
+                const countdownCircle = document.getElementById('countdown-circle');
+                countdownCircle.style.background = `conic-gradient(var(--accent-color) ${lifePercentage}%, var(--secondary-color) ${lifePercentage}%)`;
+                
+                // Update live countdown
+                document.getElementById('live-countdown').innerHTML = `
+                    <strong>${yearsRemaining} years, ${monthsRemaining} months, ${weeksRemaining} weeks, ${daysRemaining} days, and ${secondsRemaining} seconds</strong> 
+                    estimated remaining in your life. Make them count!
+                `;
+            }
+            
+            // Daily Tracker Calculations
+            const calculateDayBtn = document.getElementById('calculate-day-btn');
+            if (calculateDayBtn) {
+                calculateDayBtn.addEventListener('click', function() {
+                    const wakeUpTime = document.getElementById('wake-up-time').value;
+                    const sleepTime = document.getElementById('sleep-time').value;
+                    
+                    if (!wakeUpTime || !sleepTime) {
+                        alert('Please enter both wake-up and sleep times');
+                        return;
+                    }
+                    
+                    // Parse times
+                    const now = new Date();
+                    const wakeUpParts = wakeUpTime.split(':');
+                    const sleepParts = sleepTime.split(':');
+                    
+                    // Create Date objects for today's wake-up and sleep times
+                    const wakeUpDate = new Date();
+                    wakeUpDate.setHours(parseInt(wakeUpParts[0]), parseInt(wakeUpParts[1]), 0, 0);
+                    
+                    const sleepDate = new Date();
+                    sleepDate.setHours(parseInt(sleepParts[0]), parseInt(sleepParts[1]), 0, 0);
+                    
+                    // Adjust sleep time if it's before wake-up time (next day)
+                    if (sleepDate <= wakeUpDate) {
+                        sleepDate.setDate(sleepDate.getDate() + 1);
+                    }
+                    
+                    // Calculate sleep duration (time from sleep to wake-up)
+                    const sleepDurationMs = wakeUpDate - sleepDate + (24 * 60 * 60 * 1000);
+                    const sleepDurationHours = (sleepDurationMs / (1000 * 60 * 60)).toFixed(1);
+                    
+                    // Calculate productive hours (time from now to sleep)
+                    let productiveMs = sleepDate - now;
+                    if (productiveMs < 0) {
+                        // If sleep time has passed, use tomorrow's sleep time
+                        const tomorrowSleep = new Date(sleepDate);
+                        tomorrowSleep.setDate(sleepDate.getDate() + 1);
+                        productiveMs = tomorrowSleep - now;
+                    }
+                    const productiveHours = Math.max(0, (productiveMs / (1000 * 60 * 60)).toFixed(1));
+                    
+                    // Calculate time passed since wake-up
+                    let passedMs = now - wakeUpDate;
+                    if (passedMs < 0) {
+                        // If wake-up time is in the future (next day)
+                        const yesterdayWakeUp = new Date(wakeUpDate);
+                        yesterdayWakeUp.setDate(wakeUpDate.getDate() - 1);
+                        passedMs = now - yesterdayWakeUp;
+                    }
+                    const passedHours = Math.max(0, (passedMs / (1000 * 60 * 60)).toFixed(1));
+                    
+                    // Calculate percentages for visualization
+                    const totalDayHours = parseFloat(sleepDurationHours) + parseFloat(productiveHours) + parseFloat(passedHours);
+                    const sleepPercent = (parseFloat(sleepDurationHours) / totalDayHours * 100);
+                    const productivePercent = (parseFloat(productiveHours) / totalDayHours * 100);
+                    const passedPercent = (parseFloat(passedHours) / totalDayHours * 100);
+                    
+                    // Update DOM
+                    document.getElementById('sleep-duration').textContent = sleepDurationHours;
+                    document.getElementById('productive-hours').textContent = productiveHours;
+                    
+                    // Update visualization bars
+                    document.getElementById('sleep-fill').style.width = sleepPercent + '%';
+                    document.getElementById('productive-fill').style.width = productivePercent + '%';
+                    document.getElementById('passed-fill').style.width = passedPercent + '%';
+                    
+                    // Update countdown
+                    const hoursLeft = Math.floor(productiveMs / (1000 * 60 * 60));
+                    const minutesLeft = Math.floor((productiveMs % (1000 * 60 * 60)) / (1000 * 60));
+                    const secondsLeft = Math.floor((productiveMs % (1000 * 60)) / 1000);
+                    
+                    document.getElementById('day-countdown').textContent = 
+                        `You have ${hoursLeft} hours, ${minutesLeft} minutes, and ${secondsLeft} seconds left in your day. Use them wisely!`;
+                });
+            }
+            
+            // Life Goals Functionality
+            const addGoalBtn = document.getElementById('add-goal-btn');
+            const goalsList = document.getElementById('goals-list');
+            
+            if (addGoalBtn) {
+                addGoalBtn.addEventListener('click', function() {
+                    const goalTitle = document.getElementById('goal-title').value;
+                    const goalDeadline = document.getElementById('goal-deadline').value;
+                    
+                    if (!goalTitle || !goalDeadline) {
+                        alert('Please fill in both goal title and deadline');
+                        return;
+                    }
+                    
+                    const deadlineDate = new Date(goalDeadline);
+                    const today = new Date();
+                    
+                    // Calculate days left
+                    const timeDiff = deadlineDate - today;
+                    const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+                    
+                    // Create goal item
+                    const goalItem = document.createElement('li');
+                    goalItem.className = 'goal-item';
+                    
+                    goalItem.innerHTML = `
+                        <div class="goal-info">
+                            <div class="goal-title">${goalTitle}</div>
+                            <div class="goal-deadline">Target: ${deadlineDate.toDateString()}</div>
+                        </div>
+                        <div class="goal-days-left ${daysLeft < 0 ? 'overdue' : ''}">
+                            ${daysLeft < 0 ? Math.abs(daysLeft) + ' days overdue' : daysLeft + ' days left'}
+                        </div>
+                        <div class="goal-actions">
+                            <button class="complete-btn">✓</button>
+                            <button class="delete-btn">✕</button>
+                        </div>
+                    `;
+                    
+                    // Add complete functionality
+                    goalItem.querySelector('.complete-btn').addEventListener('click', function() {
+                        goalItem.classList.toggle('completed');
+                    });
+                    
+                    // Add delete functionality
+                    goalItem.querySelector('.delete-btn').addEventListener('click', function() {
+                        goalItem.remove();
+                    });
+                    
+                    goalsList.appendChild(goalItem);
+                    
+                    // Clear input fields
+                    document.getElementById('goal-title').value = '';
+                    document.getElementById('goal-deadline').value = '';
+                });
+            }
+            
+            // Pomodoro Timer Functionality
+            const pomodoroTimer = document.getElementById('pomodoro-timer');
+            const startPomodoroBtn = document.getElementById('start-pomodoro-btn');
+            const startBreakBtn = document.getElementById('start-break-btn');
+            const resetPomodoroBtn = document.getElementById('reset-pomodoro-btn');
+            const pomodoroCycles = document.getElementById('pomodoro-cycles');
+            
+            let timerInterval;
+            let timeLeft = 25 * 60; // 25 minutes in seconds
+            let isRunning = false;
+            let isBreak = false;
+            let cycles = 0;
+            
+            function updatePomodoroDisplay() {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                pomodoroTimer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+            
+            function startTimer(duration, isBreakSession) {
+                clearInterval(timerInterval);
+                timeLeft = duration;
+                isBreak = isBreakSession;
+                isRunning = true;
+                
+                // Update button styles
+                if (isBreak) {
+                    startBreakBtn.classList.add('break-mode');
+                    startPomodoroBtn.classList.remove('work-mode');
+                } else {
+                    startPomodoroBtn.classList.add('work-mode');
+                    startBreakBtn.classList.remove('break-mode');
+                }
+                
+                updatePomodoroDisplay();
+                
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    updatePomodoroDisplay();
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        isRunning = false;
+                        
+                        if (!isBreak) {
+                            // Work session completed
+                            cycles++;
+                            pomodoroCycles.textContent = `Completed Cycles: ${cycles}`;
+                            
+                            // Auto-start break after work
+                            if (cycles % 4 === 0) {
+                                // Long break after 4 cycles
+                                startTimer(15 * 60, true);
+                            } else {
+                                // Short break
+                                startTimer(5 * 60, true);
+                            }
+                            
+                            // Notification
+                            document.getElementById('live-countdown').textContent = 
+                                "Work session completed! Time for a break.";
+                        } else {
+                            // Break completed
+                            document.getElementById('live-countdown').textContent = 
+                                "Break completed! Ready for another work session?";
+                        }
+                    }
+                }, 1000);
+            }
+            
+            startPomodoroBtn.addEventListener('click', function() {
+                if (!isRunning || isBreak) {
+                    startTimer(25 * 60, false);
+                }
+            });
+            
+            startBreakBtn.addEventListener('click', function() {
+                if (!isRunning || !isBreak) {
+                    startTimer(5 * 60, true);
+                }
+            });
+            
+            resetPomodoroBtn.addEventListener('click', function() {
+                clearInterval(timerInterval);
+                timeLeft = 25 * 60;
+                isRunning = false;
+                isBreak = false;
+                updatePomodoroDisplay();
+                
+                // Reset button styles
+                startPomodoroBtn.classList.remove('work-mode');
+                startBreakBtn.classList.remove('break-mode');
+            });
+            
+            // Initialize display
+            updatePomodoroDisplay();
+        });
+    </script>
+</body>
+</html>
